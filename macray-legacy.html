@@ -1,0 +1,1670 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║  MACRAY — THE BUILDERS PROTOCOL                                              ║
+  ║  A self-contained guide for those who build with nothing and change          ║
+  ║  everything. Unified from five projects, one thread, one principle.          ║
+  ║                                                                              ║
+  ║  HOW TO USE THIS FILE:                                                       ║
+  ║  1. Drag this file into any modern browser. No server. No internet needed.   ║
+  ║  2. Scroll to read. Arrive at THE GUIDE.                                     ║
+  ║  3. In THE GUIDE, type your situation. Any problem. Any background.          ║
+  ║     The guide will not solve it for you. It will change how you see it.      ║
+  ║                                                                              ║
+  ║  TO HOST ON GITHUB:                                                          ║
+  ║  Drag this file into your repository. Commit. Enable GitHub Pages.          ║
+  ║  That is the entire deployment.                                              ║
+  ║                                                                              ║
+  ║  This file has zero external dependencies. It will work as long as          ║
+  ║  browsers exist. No maintenance required. Ever.                              ║
+  ║                                                                              ║
+  ║  Built: 2026. Kenya.                                                         ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Builders Protocol — a guide for anyone, from any background, facing any problem. Built by Macray. Powered by systems thinking.">
+  <meta name="theme-color" content="#04040b">
+  <title>The Builders Protocol — MACRAY</title>
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN SYSTEM — VOID MERIDIAN v2
+       Zero external resources. All inline.
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --void:     #04040b;
+      --deep:     #07071a;
+      --surface:  #0c0c20;
+      --pit:      #06060f;
+      --green:    #00ff88;
+      --cyan:     #00d4ff;
+      --amber:    #ffb347;
+      --red:      #ff4455;
+      --text:     #dde0f0;
+      --muted:    rgba(221,224,240,0.62);
+      --dim:      #5a5a78;
+      --ghost:    rgba(0,255,136,0.04);
+      --border:   rgba(0,255,136,0.12);
+      --mono:     'Courier New', Courier, monospace;
+      --serif:    Georgia, 'Times New Roman', Times, serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--text);
+      font-family: var(--serif);
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-delay: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* ── CURSOR ── */
+    #cur-dot, #cur-ring {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition-property: width, height, background;
+      transition-duration: 0.2s;
+    }
+    #cur-dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      mix-blend-mode: screen;
+    }
+    #cur-ring {
+      width: 28px; height: 28px;
+      border: 1px solid rgba(0,255,136,0.4);
+      border-radius: 50%;
+      z-index: 9998;
+      transition: transform 0.08s ease;
+    }
+    @media (hover: none) {
+      #cur-dot, #cur-ring { display: none; }
+      body { cursor: auto; }
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar-track { background: var(--void); }
+    ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+    /* ── SCAN LINE OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 3px,
+        rgba(0,0,0,0.035) 3px, rgba(0,0,0,0.035) 4px
+      );
+      pointer-events: none;
+      z-index: 8000;
+    }
+
+    /* ── SECTION SHELL ── */
+    .section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 110px 48px;
+    }
+    .section--center { text-align: center; }
+    .s-inner {
+      position: relative;
+      z-index: 10;
+      max-width: 860px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Parallax bg layer */
+    .pl {
+      position: absolute;
+      inset: -25%;
+      will-change: transform;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Edge glow divider */
+    .edge::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%, var(--green) 40%,
+        var(--cyan) 60%, transparent 100%);
+      opacity: 0.2;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .label {
+      display: block;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--green);
+      letter-spacing: 0.55em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .label--dim { color: var(--dim); }
+    .label--cyan { color: var(--cyan); }
+
+    .heading {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      line-height: 1.1;
+      color: var(--text);
+      font-style: italic;
+      margin-bottom: 36px;
+      letter-spacing: -0.01em;
+    }
+    .heading em { color: var(--green); font-style: normal; }
+
+    .body {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 1.9vw, 1.15rem);
+      line-height: 1.95;
+      color: var(--muted);
+      max-width: 680px;
+    }
+    .body strong { color: var(--text); font-weight: normal; }
+    .body em { color: rgba(0,255,136,0.88); font-style: normal; }
+
+    .rule {
+      width: 56px; height: 1px;
+      background: var(--green);
+      margin: 36px 0;
+      opacity: 0.5;
+    }
+    .rule--c { margin-left: auto; margin-right: auto; }
+
+    /* ── SCROLL REVEAL ── */
+    .rv {
+      opacity: 0;
+      transform: translateY(38px);
+      transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .rv.on { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.25s; }
+    .d3 { transition-delay: 0.4s; }
+    .d4 { transition-delay: 0.55s; }
+    .d5 { transition-delay: 0.7s; }
+    .d6 { transition-delay: 0.85s; }
+
+    /* ════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      flex-direction: column;
+      background: var(--void);
+      text-align: center;
+    }
+    #star-cv { position: absolute; inset: 0; z-index: 2; }
+    #hero-glow {
+      position: absolute; top: 50%; left: 50%;
+      width: 750px; height: 750px;
+      transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 65%);
+      border-radius: 50%; z-index: 3;
+    }
+    #hero .s-inner {
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* Logo */
+    #logo-wrap { margin-bottom: 44px; }
+    #logo-svg { width: min(90vw, 640px); height: auto; overflow: visible; display: block; }
+
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @keyframes node-pop {
+      0% { opacity:0; transform:scale(0); }
+      60% { opacity:1; transform:scale(1.4); }
+      100% { opacity:0.6; transform:scale(1); }
+    }
+    @keyframes glitch {
+      0%,90%,100% { clip-path:none; transform:skewX(0); opacity:1; }
+      91% { clip-path:polygon(0 18%,100% 18%,100% 38%,0 38%); transform:skewX(-4deg) translateX(4px); }
+      92% { clip-path:polygon(0 55%,100% 55%,100% 75%,0 75%); transform:skewX(3deg) translateX(-3px); }
+      93% { clip-path:none; transform:skewX(0); }
+      94% { clip-path:polygon(0 5%,100% 5%,100% 22%,0 22%); transform:skewX(-2deg) translateX(2px); }
+      95% { clip-path:none; }
+    }
+    @keyframes fade-in { from{opacity:0;} to{opacity:1;} }
+    @keyframes up-in { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes stem { 0%,100%{opacity:0.2;} 50%{opacity:0.9;} }
+
+    .hero-kicker {
+      font-family: var(--mono);
+      font-size: clamp(0.58rem,1.3vw,0.74rem);
+      color: var(--green);
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: up-in 0.8s ease 2.8s forwards;
+      margin-bottom: 16px;
+    }
+    .hero-mission {
+      font-family: var(--serif);
+      font-size: clamp(1rem,2.6vw,1.55rem);
+      line-height: 1.7;
+      color: rgba(221,224,240,0.82);
+      max-width: 600px;
+      font-style: italic;
+      opacity: 0;
+      animation: up-in 0.8s ease 3.2s forwards;
+      margin-bottom: 12px;
+    }
+    .hero-mission em { color: var(--green); font-style: normal; }
+    .hero-sub2 {
+      font-family: var(--mono);
+      font-size: clamp(0.55rem,1.1vw,0.66rem);
+      color: var(--dim);
+      letter-spacing: 0.4em;
+      opacity: 0;
+      animation: up-in 0.7s ease 3.7s forwards;
+    }
+
+    .scroll-cue {
+      position: absolute; bottom: 44px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      opacity: 0;
+      animation: up-in 0.7s ease 4.2s forwards;
+    }
+    .scroll-cue span {
+      font-family: var(--mono); font-size: 0.56rem;
+      color: var(--dim); letter-spacing: 0.4em;
+    }
+    .scroll-stem {
+      width: 1px; height: 52px;
+      background: linear-gradient(to bottom, var(--green), transparent);
+      animation: stem 2.2s ease-in-out infinite;
+    }
+
+    /* ════════════════════════════════════════
+       ACT I — THE PROBLEM
+    ════════════════════════════════════════ */
+    #act1 { background: var(--void); }
+    .grid-field {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.025) 1px, transparent 1px);
+      background-size: 64px 64px;
+      z-index: 2;
+    }
+
+    /* ════════════════════════════════════════
+       ACT II — THE METHOD
+    ════════════════════════════════════════ */
+    #act2 { background: var(--deep); }
+
+    .steps { margin-top: 8px; display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 0 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0,255,136,0.07);
+      position: relative;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: var(--mono);
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      color: rgba(0,255,136,0.12);
+      line-height: 1;
+      padding-top: 4px;
+      font-weight: 700;
+    }
+    .step-content {}
+    .step-title {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      color: var(--green);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .step-body {
+      font-family: var(--serif);
+      font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+      line-height: 1.85;
+      color: var(--muted);
+    }
+    .step-body em { color: rgba(0,255,136,0.85); font-style: normal; }
+
+    /* ════════════════════════════════════════
+       ACT III — THE WORK
+    ════════════════════════════════════════ */
+    #act3 { background: var(--void); align-items: flex-start; }
+
+    .proj-grid { display: grid; gap: 14px; margin-top: 8px; }
+    .card {
+      border: 1px solid var(--border);
+      padding: 26px 30px;
+      background: var(--ghost);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+      background: linear-gradient(to bottom, var(--green), var(--cyan));
+      transform: scaleY(0); transform-origin: top;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .card:hover::before { transform: scaleY(1); }
+    .card:hover { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.028); }
+    .card::after {
+      content: '//';
+      position: absolute; top: 14px; right: 18px;
+      font-family: var(--mono); font-size: 0.58rem;
+      color: var(--dim); opacity: 0.4;
+    }
+    .card-tag {
+      font-family: var(--mono); font-size: 0.62rem;
+      color: var(--green); letter-spacing: 0.35em;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .card-text {
+      font-family: var(--serif);
+      font-size: clamp(0.93rem, 1.75vw, 1.05rem);
+      line-height: 1.78; color: rgba(221,224,240,0.62);
+    }
+    .card-text em { color: rgba(221,224,240,0.88); font-style: normal; }
+
+    /* Thread connector */
+    .thread-label {
+      margin-top: 44px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--dim);
+      letter-spacing: 0.4em;
+      text-align: center;
+      padding: 20px;
+      border: 1px solid rgba(0,255,136,0.07);
+    }
+    .thread-label em { color: var(--green); }
+
+    /* ════════════════════════════════════════
+       ACT IV — THE THREAD
+    ════════════════════════════════════════ */
+    #act4 { background: var(--deep); }
+
+    .vein {
+      position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; transform: translateX(-50%);
+      background: linear-gradient(to bottom,
+        transparent, rgba(0,255,136,0.2) 30%,
+        rgba(0,212,255,0.2) 70%, transparent);
+      z-index: 3;
+    }
+
+    .pull {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 2.5rem);
+      line-height: 1.35; color: var(--text); font-style: italic;
+      max-width: 780px; margin: 0 auto 40px;
+      position: relative;
+    }
+    .pull::before {
+      content: '\201C';
+      position: absolute; top: -28px; left: -10px;
+      font-size: 7rem; line-height: 1;
+      color: var(--green); opacity: 0.1;
+      font-family: var(--serif); pointer-events: none;
+    }
+    .pull em { color: var(--green); font-style: normal; }
+    @media (max-width:600px) { .pull::before { display:none; } }
+
+    /* ════════════════════════════════════════
+       THE GUIDE — The Centerpiece
+    ════════════════════════════════════════ */
+    #guide {
+      background: var(--pit);
+      min-height: 100vh;
+      padding: 110px 48px;
+      display: flex; flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    #guide .s-inner { max-width: 780px; }
+
+    .guide-header { text-align: center; margin-bottom: 56px; }
+    .guide-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem,5vw,3.2rem);
+      line-height: 1.15; font-style: italic;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .guide-title em { color: var(--green); font-style: normal; }
+    .guide-subtitle {
+      font-family: var(--mono);
+      font-size: clamp(0.6rem,1.3vw,0.72rem);
+      color: var(--dim); letter-spacing: 0.4em;
+      line-height: 2; text-transform: uppercase;
+    }
+
+    /* Guide terminal */
+    .guide-terminal {
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.5);
+      position: relative;
+      min-height: 420px;
+    }
+    .terminal-bar {
+      background: rgba(0,255,136,0.06);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 18px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .t-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .t-dot:nth-child(1) { background: rgba(255,68,85,0.5); }
+    .t-dot:nth-child(2) { background: rgba(255,179,71,0.5); }
+    .t-dot:nth-child(3) { background: rgba(0,255,136,0.5); }
+    .t-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      color: var(--dim); letter-spacing: 0.3em;
+      margin-left: auto;
+    }
+
+    .terminal-body { padding: 28px 24px; min-height: 300px; }
+
+    /* Conversation log */
+    #convo { display: flex; flex-direction: column; gap: 20px; }
+
+    .msg {
+      display: flex; gap: 14px; align-items: flex-start;
+      animation: msg-in 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes msg-in {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .msg-icon {
+      flex-shrink: 0;
+      width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--green);
+      margin-top: 2px;
+    }
+    .msg-icon--user { color: var(--cyan); border-color: rgba(0,212,255,0.2); }
+    .msg-text {
+      font-family: var(--serif);
+      font-size: clamp(0.93rem, 1.75vw, 1.05rem);
+      line-height: 1.85; color: var(--muted); flex: 1;
+    }
+    .msg-text strong { color: var(--text); font-weight: normal; }
+    .msg-text em { color: var(--green); font-style: normal; }
+    .msg-text .highlight {
+      display: inline-block;
+      background: rgba(0,255,136,0.07);
+      border-left: 2px solid var(--green);
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-style: italic;
+      color: rgba(221,224,240,0.85);
+      width: 100%;
+    }
+    .msg-text .framework {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      padding: 16px 18px;
+      margin: 14px 0;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: rgba(0,255,136,0.75);
+    }
+    .msg-text .framework span { color: var(--dim); }
+
+    /* Typing indicator */
+    #typing {
+      display: none; align-items: center; gap: 14px;
+      padding: 4px 0;
+    }
+    #typing.active { display: flex; }
+    .t-dots span {
+      display: inline-block;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--green); margin: 0 2px;
+      animation: tdot 1.2s ease-in-out infinite;
+    }
+    .t-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .t-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes tdot {
+      0%,80%,100% { opacity:0.2; transform:scale(0.8); }
+      40% { opacity:1; transform:scale(1); }
+    }
+
+    /* Input area */
+    .guide-input-wrap {
+      border-top: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex; gap: 12px; align-items: flex-end;
+    }
+    #guide-input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(0,255,136,0.14);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      line-height: 1.7;
+      padding: 12px 16px;
+      resize: none;
+      outline: none;
+      min-height: 48px;
+      max-height: 140px;
+      transition: border-color 0.25s;
+    }
+    #guide-input::placeholder { color: var(--dim); }
+    #guide-input:focus { border-color: rgba(0,255,136,0.35); }
+
+    #send-btn {
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      padding: 10px 18px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-transform: uppercase;
+      white-space: nowrap;
+      align-self: stretch;
+      display: flex; align-items: center;
+    }
+    #send-btn:hover:not(:disabled) {
+      background: var(--green); color: var(--void);
+    }
+    #send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    #restart-btn {
+      display: none;
+      margin-top: 20px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      padding: 10px 20px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #restart-btn:hover { color: var(--green); border-color: var(--green); }
+
+    /* Guide note */
+    .guide-note {
+      margin-top: 20px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      color: var(--dim);
+      letter-spacing: 0.28em;
+      text-align: center;
+      line-height: 2;
+    }
+
+    /* ════════════════════════════════════════
+       LEGACY CLIMAX
+    ════════════════════════════════════════ */
+    #legacy {
+      background: var(--void);
+      flex-direction: column;
+      text-align: center;
+    }
+    .pulse-field {
+      position: absolute; top:50%; left:50%;
+      transform: translate(-50%,-50%);
+      z-index: 2; pointer-events: none;
+    }
+    .p-ring {
+      position: absolute; top:50%; left:50%;
+      transform: translate(-50%,-50%);
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,255,136,0.15);
+    }
+    @keyframes ring-x {
+      0%   { transform:translate(-50%,-50%) scale(0.5); opacity:0.7; }
+      100% { transform:translate(-50%,-50%) scale(5);   opacity:0; }
+    }
+    .p-ring:nth-child(1) { animation: ring-x 4.5s ease-out infinite 0s; }
+    .p-ring:nth-child(2) { animation: ring-x 4.5s ease-out infinite 1.5s; }
+    .p-ring:nth-child(3) { animation: ring-x 4.5s ease-out infinite 3s; }
+
+    .l-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at center, rgba(0,255,136,0.065) 0%, transparent 58%);
+      z-index: 3;
+    }
+    .big-word {
+      display: block;
+      font-family: var(--mono);
+      font-size: clamp(3rem, 10vw, 8rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 0.08em; line-height: 1;
+      margin-bottom: 14px;
+      text-shadow:
+        0 0 40px rgba(0,255,136,0.4),
+        0 0 90px rgba(0,255,136,0.15),
+        0 0 160px rgba(0,255,136,0.07);
+    }
+    .big-sub {
+      font-family: var(--mono);
+      font-size: clamp(0.58rem,1.4vw,0.78rem);
+      color: var(--dim); letter-spacing: 0.5em;
+      text-transform: uppercase; margin-bottom: 52px;
+    }
+    .l-proof {
+      font-family: var(--serif);
+      font-size: clamp(1rem,2.2vw,1.35rem);
+      line-height: 1.88; color: rgba(221,224,240,0.72);
+      max-width: 680px; margin: 0 auto 44px;
+    }
+    .l-proof em { color: var(--green); font-style: normal; }
+
+    .principle {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem,2.4vw,1.45rem);
+      line-height: 1.6; font-style: italic;
+      color: var(--text);
+      max-width: 700px; margin: 0 auto;
+      padding: 36px 40px;
+      border: 1px solid rgba(0,255,136,0.15);
+      background: rgba(0,255,136,0.02);
+      position: relative;
+    }
+    .principle::before {
+      content: 'DEDUCED PRINCIPLE';
+      position: absolute; top: -10px; left: 24px;
+      background: var(--void); padding: 0 10px;
+      font-family: var(--mono); font-size: 0.54rem;
+      color: var(--green); letter-spacing: 0.4em;
+    }
+
+    /* ════════════════════════════════════════
+       FINAL GIFT
+    ════════════════════════════════════════ */
+    #gift {
+      background: var(--void);
+      text-align: center; flex-direction: column;
+      min-height: 75vh;
+    }
+    .gift-body {
+      font-family: var(--serif);
+      font-size: clamp(0.98rem,2vw,1.15rem);
+      line-height: 2.1; color: rgba(221,224,240,0.58);
+      max-width: 600px; margin: 0 auto 44px;
+    }
+    .gift-body strong { color: var(--green); font-weight: normal; }
+    .sig {
+      font-family: var(--mono);
+      font-size: 0.62rem; color: var(--dim);
+      letter-spacing: 0.35em; line-height: 2.4;
+    }
+    .sig span { color: var(--green); }
+    .final-edge {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green), var(--cyan), transparent);
+      opacity: 0.18;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .section, #guide { padding: 80px 20px; }
+      .card { padding: 20px 20px; }
+      .principle { padding: 28px 22px; }
+      .step { grid-template-columns: 36px 1fr; gap: 0 16px; }
+      .guide-input-wrap { flex-direction: column; }
+      #send-btn { width: 100%; justify-content: center; }
+    }
+    @media (max-width:480px) {
+      .guide-terminal { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cur-dot" aria-hidden="true"></div>
+<div id="cur-ring" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<section class="section" id="hero" aria-label="Introduction">
+  <canvas id="star-cv" aria-hidden="true"></canvas>
+  <div id="hero-glow" aria-hidden="true"></div>
+  <div class="pl" id="pl-hero" data-rate="0.45"
+       style="background:radial-gradient(ellipse at 60% 40%,rgba(0,212,255,0.03) 0%,transparent 55%);"
+       aria-hidden="true"></div>
+
+  <div class="s-inner">
+
+    <!-- LOGO — pure SVG, zero images -->
+    <div id="logo-wrap" role="img" aria-label="MACRAY — name logo">
+      <svg id="logo-svg" viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg"
+           aria-hidden="true" focusable="false">
+
+        <!-- Circuit rails -->
+        <g style="animation:fade-in 0.4s ease 0.2s both;" opacity="0.3">
+          <polyline points="78,16 178,16 178,30"
+            fill="none" stroke="#00ff88" stroke-width="0.6"/>
+          <circle cx="78" cy="16" r="2.5" fill="none" stroke="#00ff88" stroke-width="0.6"/>
+          <polyline points="502,16 602,16 602,30"
+            fill="none" stroke="#00ff88" stroke-width="0.6"/>
+          <circle cx="602" cy="16" r="2.5" fill="none" stroke="#00ff88" stroke-width="0.6"/>
+          <circle cx="26" cy="85" r="3" fill="#00ff88"
+            style="animation:node-pop 0.5s ease 2.2s both;"/>
+          <line x1="29" y1="85" x2="50" y2="85"
+            stroke="#00ff88" stroke-width="0.6" opacity="0.5"
+            style="animation:fade-in 0.3s ease 2.3s both;"/>
+          <circle cx="654" cy="85" r="3" fill="#00ff88"
+            style="animation:node-pop 0.5s ease 2.2s both;"/>
+          <line x1="651" y1="85" x2="630" y2="85"
+            stroke="#00ff88" stroke-width="0.6" opacity="0.5"
+            style="animation:fade-in 0.3s ease 2.3s both;"/>
+          <!-- mini nodes along underline -->
+          <circle cx="200" cy="158" r="2" fill="#00d4ff" opacity="0.4"
+            style="animation:node-pop 0.4s ease 2.5s both;"/>
+          <circle cx="340" cy="158" r="2" fill="#00ff88" opacity="0.4"
+            style="animation:node-pop 0.4s ease 2.65s both;"/>
+          <circle cx="480" cy="158" r="2" fill="#00d4ff" opacity="0.4"
+            style="animation:node-pop 0.4s ease 2.8s both;"/>
+        </g>
+
+        <!-- Glitch ghost -->
+        <text x="52" y="132" font-family="'Courier New',monospace"
+              font-size="102" font-weight="700"
+              fill="rgba(0,212,255,0.04)" letter-spacing="2"
+              style="animation:glitch 8s ease-in-out 3s infinite;">MACRAY</text>
+
+        <!-- M -->
+        <path d="M 52,142 L 52,28 L 108,95 L 164,28 L 164,142"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 1.0s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;"/>
+
+        <!-- A -->
+        <path d="M 190,142 L 230,28 L 270,142 M 202,108 L 258,108"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 1.0s cubic-bezier(0.4,0,0.2,1) 0.65s forwards;"/>
+
+        <!-- C -->
+        <path d="M 328,42 C 300,42 282,60 282,85 C 282,110 300,128 328,128"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 0.9s cubic-bezier(0.4,0,0.2,1) 0.95s forwards;"/>
+
+        <!-- R -->
+        <path d="M 348,142 L 348,28 L 388,28 C 412,28 422,42 422,57
+                 C 422,72 412,85 388,85 L 348,85 M 382,85 L 422,142"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 1.0s cubic-bezier(0.4,0,0.2,1) 1.2s forwards;"/>
+
+        <!-- A -->
+        <path d="M 440,142 L 480,28 L 520,142 M 452,108 L 508,108"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 1.0s cubic-bezier(0.4,0,0.2,1) 1.45s forwards;"/>
+
+        <!-- Y -->
+        <path d="M 540,28 L 575,85 L 610,28 M 575,85 L 575,142"
+          fill="none" stroke="#00ff88" stroke-width="4"
+          stroke-linecap="round" stroke-linejoin="round"
+          stroke-dasharray="900" stroke-dashoffset="900"
+          style="animation:draw 0.9s cubic-bezier(0.4,0,0.2,1) 1.7s forwards;"/>
+
+        <!-- Underline -->
+        <line x1="52" y1="158" x2="610" y2="158"
+          stroke="#00ff88" stroke-width="0.6" opacity="0.28"
+          stroke-dasharray="600" stroke-dashoffset="600"
+          style="animation:draw 0.6s ease 2.1s forwards;"/>
+      </svg>
+    </div>
+
+    <p class="hero-kicker">Kenya &nbsp;·&nbsp; Systems Architect &nbsp;·&nbsp; The Builders Protocol</p>
+
+    <p class="hero-mission" role="heading" aria-level="1">
+      This is not a monument.<br>
+      This is a <em>tool</em> — for anyone, facing anything,<br>
+      who is ready to think differently.
+    </p>
+
+    <p class="hero-sub2">Scroll. Arrive at The Guide. Bring your real problem.</p>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <span>scroll</span>
+    <div class="scroll-stem"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ACT I — THE PROBLEM WITH THE WORLD
+═══════════════════════════════════════════════════════════ -->
+<section class="section edge" id="act1" aria-label="The Problem">
+  <div class="grid-field pl" id="pl-a1" data-rate="0.3" aria-hidden="true"></div>
+
+  <div class="s-inner">
+    <span class="label rv">The Problem</span>
+    <h2 class="heading rv d1">Most doors are locked<br>for no <em>good</em> reason.</h2>
+    <div class="rule rv d2"></div>
+
+    <p class="body rv d2">
+      The world has sorted itself into two groups:
+      those who have access to intelligence, tools, and systems that work —
+      and those who are told to wait, to study longer, to pay more,
+      to find the right credential before they are allowed to participate.
+    </p>
+    <br>
+    <p class="body rv d3">
+      Most of what sits behind those locked doors is not actually rare.
+      It is organized. It is systematic. <strong>It is learnable.</strong>
+      The problem is not that the knowledge is hard.
+      The problem is that nobody built the door.
+    </p>
+    <br>
+    <p class="body rv d4" style="font-style:italic; color:rgba(0,255,136,0.8);">
+      Every project here was built to answer one question:<br>
+      <em>What exists that should be free — and how do we open it?</em>
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ACT II — THE METHOD
+═══════════════════════════════════════════════════════════ -->
+<section class="section edge" id="act2" aria-label="The Method">
+  <div class="pl" id="pl-a2" data-rate="0.2"
+       style="background:radial-gradient(ellipse at 80% 50%,rgba(0,212,255,0.04) 0%,transparent 55%);"
+       aria-hidden="true"></div>
+
+  <div class="s-inner">
+    <span class="label rv">The Method</span>
+    <h2 class="heading rv d1">How every problem<br>becomes a <em>system</em>.</h2>
+    <div class="rule rv d2"></div>
+
+    <p class="body rv d2" style="margin-bottom:40px;">
+      Not a philosophy. A repeatable process.
+      Applied across football analytics, education, cybersecurity, and content —
+      it produces the same result every time: something that works,
+      for people who were told it would not work for them.
+    </p>
+
+    <div class="steps">
+
+      <div class="step rv d2">
+        <span class="step-num">01</span>
+        <div class="step-content">
+          <div class="step-title">Find the Real Constraint</div>
+          <p class="step-body">
+            The surface problem is almost never the actual problem.
+            A student who cannot pass an exam has a <em>resource problem</em>, not a capability problem.
+            A person who cannot grow their income has a <em>leverage problem</em>, not a work ethic problem.
+            The method begins by refusing to accept the presented symptom.
+          </p>
+        </div>
+      </div>
+
+      <div class="step rv d3">
+        <span class="step-num">02</span>
+        <div class="step-content">
+          <div class="step-title">Map What Already Exists</div>
+          <p class="step-body">
+            Nothing is built from scratch.
+            Every system reuses components that already proved their value.
+            Before writing a single line or spending a single hour,
+            the question is: <em>what solved a similar problem somewhere else —
+            and what was the mechanism?</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="step rv d4">
+        <span class="step-num">03</span>
+        <div class="step-content">
+          <div class="step-title">Build the Minimum That Proves the Thesis</div>
+          <p class="step-body">
+            Not the finished product. The proof.
+            The smallest possible version that answers the one critical question:
+            does this actually work?
+            <em>A 2,000-paragraph textbook starts as one correctly-answered past paper question.</em>
+            A prediction engine starts as one match, correctly modeled.
+          </p>
+        </div>
+      </div>
+
+      <div class="step rv d5">
+        <span class="step-num">04</span>
+        <div class="step-content">
+          <div class="step-title">Make It Accessible by Design</div>
+          <p class="step-body">
+            If only an expert can use the output, the work is incomplete.
+            Every system must be legible to a farmer, a student, a parent.
+            Not dumbed down — <em>translated</em>.
+            The measure of a tool is not its sophistication.
+            It is how fast a stranger can get value from it.
+          </p>
+        </div>
+      </div>
+
+      <div class="step rv d6">
+        <span class="step-num">05</span>
+        <div class="step-content">
+          <div class="step-title">Harden and Release</div>
+          <p class="step-body">
+            A tool that breaks under real conditions serves nobody.
+            Before anything is called done, it gets tested against failure —
+            wrong inputs, missing data, hostile conditions.
+            Then it is released. Publicly.
+            Because <em>access only compounds when the door is actually open.</em>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ACT III — THE WORK
+═══════════════════════════════════════════════════════════ -->
+<section class="section edge" id="act3" aria-label="The Work" style="align-items:flex-start;">
+  <div class="pl" id="pl-a3" data-rate="0.25"
+       style="background:radial-gradient(ellipse at 25% 60%,rgba(0,255,136,0.04) 0%,transparent 58%);"
+       aria-hidden="true"></div>
+
+  <div class="s-inner">
+    <span class="label rv">The Work</span>
+    <h2 class="heading rv d1">Five systems.<br>One <em>argument</em>.</h2>
+    <div class="rule rv d2"></div>
+
+    <div class="proj-grid">
+
+      <article class="card rv d2">
+        <div class="card-tag">APEX Football Engine</div>
+        <p class="card-text">
+          Professional-grade match prediction intelligence.
+          Poisson modelling, market contradiction detection, multi-tier accumulator construction —
+          built for a single person with a laptop and a standard connection.
+          <em>Analytics that required a data science team now runs in Telegram.</em>
+          The constraint it removed: the belief that systematic edge requires institutional scale.
+        </p>
+      </article>
+
+      <article class="card rv d3">
+        <div class="card-tag">ATD Vault — KASNEB Study Platform</div>
+        <p class="card-text">
+          The full KASNEB ATD syllabus — all six units — rebuilt as a self-directed learning engine.
+          Past-paper forensics. AI tutoring. Mock exams. Rapid reference cards.
+          <em>Every study material a Kenyan student needs, at zero tuition cost.</em>
+          The constraint it removed: the belief that professional accounting education
+          requires a classroom and a fee.
+        </p>
+      </article>
+
+      <article class="card rv d4">
+        <div class="card-tag">APEX-LAB · Cybersecurity Toolkit</div>
+        <p class="card-text">
+          OSINT. Network assessment. Credential testing. Post-exploitation analysis.
+          A complete penetration testing environment built with SDL compliance —
+          for one person on an 8GB machine, on ARM64, in Termux.
+          <em>Digital security sovereignty, without an enterprise budget.</em>
+          The constraint it removed: the idea that security knowledge is institutional property.
+        </p>
+      </article>
+
+      <article class="card rv d5">
+        <div class="card-tag">APEX Faceless Creator Engine</div>
+        <p class="card-text">
+          A full content production pipeline for digital income — scripted, voiced, edited,
+          distributed — built without a camera, a studio, or a face.
+          Gumroad. Creator Rewards. NotebookLM pipeline.
+          <em>Passive income infrastructure built by a single operator with free tools.</em>
+          The constraint it removed: the assumption that content monetization requires exposure.
+        </p>
+      </article>
+
+      <article class="card rv d6">
+        <div class="card-tag">The Builders Protocol · This File</div>
+        <p class="card-text">
+          A distillation of every method, every lesson, every failure and iteration —
+          compressed into a single, self-contained, permanently-accessible guide.
+          Not a portfolio. Not a tribute.
+          <em>A cloned thinking process, available to anyone who finds this page.</em>
+          The constraint it removes: the need to know the right person
+          to get the right kind of thinking applied to your problem.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="thread-label rv d6" style="margin-top:36px;">
+      Every one of these removed a different lock. Every one used the same key.<br>
+      <em>Build the system. Open the door. Walk away.</em>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ACT IV — THE THREAD
+═══════════════════════════════════════════════════════════ -->
+<section class="section section--center edge" id="act4" aria-label="The Thread">
+  <div class="vein" aria-hidden="true"></div>
+  <div class="pl" id="pl-a4" data-rate="0.15"
+       style="background:radial-gradient(ellipse at 50% 50%,rgba(0,212,255,0.025) 0%,transparent 55%);"
+       aria-hidden="true"></div>
+
+  <div class="s-inner" style="display:flex;flex-direction:column;align-items:center;">
+    <span class="label rv">The Thread</span>
+
+    <blockquote class="pull rv d1">
+      The constraint was never the knowledge.<br>
+      It was always the <em>door.</em>
+    </blockquote>
+
+    <p class="body rv d2" style="text-align:center;margin:0 auto;">
+      Football data. Accounting syllabi. Security techniques. Content tools.
+      These look like different fields. They are not.
+      They are the same argument, made in five different languages:
+    </p>
+    <br>
+    <p class="body rv d3" style="text-align:center;margin:0 auto;font-style:italic;color:rgba(0,255,136,0.82);">
+      <em>Privilege is a design flaw, not a natural law.</em><br>
+      <em>Systems can be redesigned.</em><br>
+      <em>Anyone with precision and persistence can redesign them.</em>
+    </p>
+    <br>
+    <p class="body rv d4" style="text-align:center;margin:0 auto;">
+      This is not idealism. It is engineering.
+      <strong>The work proves it.</strong>
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     THE GUIDE — Interactive Problem Thinking Engine
+═══════════════════════════════════════════════════════════ -->
+<section id="guide" aria-label="The Guide — Interactive">
+
+  <div class="s-inner">
+
+    <div class="guide-header rv">
+      <span class="label label--cyan" style="justify-content:center;display:flex;">The Guide</span>
+      <h2 class="guide-title">Bring your real problem.<br><em>We will find the door.</em></h2>
+      <p class="guide-subtitle">
+        Any background. Any situation. Any stage.<br>
+        This guide will not solve your problem.<br>
+        It will change how you see it.
+      </p>
+    </div>
+
+    <div class="guide-terminal rv d2" role="region" aria-label="Interactive guide">
+      <div class="terminal-bar" aria-hidden="true">
+        <div class="t-dot"></div>
+        <div class="t-dot"></div>
+        <div class="t-dot"></div>
+        <span class="t-label">BUILDERS PROTOCOL · GUIDE v1.0</span>
+      </div>
+
+      <div class="terminal-body">
+        <div id="convo" aria-live="polite" aria-atomic="false">
+          <!-- Messages injected here by JS -->
+        </div>
+        <div id="typing" aria-hidden="true">
+          <div class="msg-icon">BP</div>
+          <div class="t-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="guide-input-wrap">
+        <textarea id="guide-input"
+          placeholder="Type your situation here. One sentence is enough to begin."
+          rows="1"
+          aria-label="Describe your situation"></textarea>
+        <button id="send-btn" aria-label="Send">SEND →</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;">
+      <button id="restart-btn" aria-label="Start a new session">↺ &nbsp;NEW SESSION</button>
+    </div>
+
+    <p class="guide-note rv d3">
+      This guide runs entirely in your browser.<br>
+      No data sent anywhere. No account required. Works offline.
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     LEGACY CLIMAX
+═══════════════════════════════════════════════════════════ -->
+<section class="section section--center edge" id="legacy" aria-label="The Legacy">
+  <div class="pulse-field" aria-hidden="true">
+    <div class="p-ring"></div><div class="p-ring"></div><div class="p-ring"></div>
+  </div>
+  <div class="l-glow" aria-hidden="true"></div>
+  <div class="pl" id="pl-lg" data-rate="0.5" aria-hidden="true"></div>
+
+  <div class="s-inner" style="display:flex;flex-direction:column;align-items:center;">
+
+    <span class="label label--cyan rv" style="letter-spacing:0.6em;">Legacy · Deduced</span>
+
+    <span class="big-word rv d1" role="heading" aria-level="2">ACCESS</span>
+    <p class="big-sub rv d2">IS THE ARCHITECTURE OF FREEDOM</p>
+
+    <p class="l-proof rv d3">
+      Everything built here was the same act, repeated across five domains:
+      taking something locked — intelligence, education, security, income, thinking —
+      and making it <em>open</em>.
+      Making it <em>personal</em>.
+      Making it available to anyone with a browser and the will to use it.
+    </p>
+
+    <blockquote class="principle rv d4" aria-label="The deduced principle">
+      If you can build one system that gives one person
+      the capability they could never have afforded —
+      you have done something that compounds silently,
+      in the lives of people you will never meet,
+      for longer than you will live.
+    </blockquote>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FINAL GIFT
+═══════════════════════════════════════════════════════════ -->
+<section class="section section--center" id="gift" aria-label="Final Gift">
+  <div class="pl" id="pl-gf" data-rate="0.2"
+       style="background:radial-gradient(ellipse at 50% 75%,rgba(0,255,136,0.035) 0%,transparent 55%);"
+       aria-hidden="true"></div>
+
+  <div class="s-inner" style="display:flex;flex-direction:column;align-items:center;">
+
+    <span class="label label--dim rv">For Anyone Who Finds This</span>
+
+    <p class="gift-body rv d1">
+      You do not need to know him.<br><br>
+      The only thing this file asks of you<br>
+      is the one thing it taught:<br><br>
+      <strong>Whatever you know —<br>
+      whatever you can see, build, or explain —<br>
+      ask yourself who cannot access it yet.</strong><br><br>
+      Then build the door.<br><br>
+      Not for credit.<br>
+      Not for payment.<br>
+      Because <strong>access compounds</strong>,
+      and a single well-built system
+      outlives its architect by generations.
+    </p>
+
+    <div class="rule rule--c rv d2"></div>
+
+    <p class="sig rv d3">
+      Zero external dependencies. Runs forever.<br>
+      <span>MACRAY &nbsp;·&nbsp; KENYA &nbsp;·&nbsp; 2026</span><br>
+      <span style="color:var(--dim);font-size:0.55rem;letter-spacing:0.3em;">
+        THE BUILDERS PROTOCOL — ONE FILE. NO MAINTENANCE. OPEN FOREVER.
+      </span>
+    </p>
+  </div>
+
+  <div class="final-edge" aria-hidden="true"></div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT — Zero dependencies, all vanilla
+═══════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ─────────────────────────────────────────
+   1. CURSOR
+───────────────────────────────────────── */
+(function() {
+  var dot  = document.getElementById('cur-dot');
+  var ring = document.getElementById('cur-ring');
+  var mx=0, my=0, rx=0, ry=0, vis=false;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    if (!vis) { dot.style.opacity='1'; ring.style.opacity='1'; vis=true; }
+    dot.style.left = mx+'px'; dot.style.top = my+'px';
+  });
+  document.addEventListener('mouseleave', function() {
+    vis=false; dot.style.opacity='0'; ring.style.opacity='0';
+  });
+  (function lag() {
+    rx += (mx-rx)*0.11; ry += (my-ry)*0.11;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(lag);
+  })();
+})();
+
+
+/* ─────────────────────────────────────────
+   2. STAR FIELD
+───────────────────────────────────────── */
+(function() {
+  var cv = document.getElementById('star-cv');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var stars=[], W, H;
+
+  function resize() {
+    W = cv.width  = cv.offsetWidth;
+    H = cv.height = cv.offsetHeight;
+  }
+  function seed() {
+    stars = [];
+    var n = Math.floor(W*H/5800);
+    for (var i=0;i<n;i++) {
+      stars.push({
+        x: Math.random()*W, y: Math.random()*H,
+        r: Math.random()*1.1+0.2,
+        a: Math.random()*0.45+0.08,
+        ph: Math.random()*Math.PI*2,
+        sp: Math.random()*0.008+0.003
+      });
+    }
+  }
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    var t = performance.now()*0.001;
+    for (var i=0;i<stars.length;i++) {
+      var s=stars[i];
+      var op = s.a*(0.65+0.35*Math.sin(s.ph+t*s.sp*60));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,255,136,'+op+')';
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',function(){resize();seed();});
+  resize(); seed(); draw();
+})();
+
+
+/* ─────────────────────────────────────────
+   3. PARALLAX
+───────────────────────────────────────── */
+(function() {
+  var layers = document.querySelectorAll('[data-rate]');
+  function upd() {
+    var sy = window.pageYOffset;
+    for (var i=0;i<layers.length;i++) {
+      var r = parseFloat(layers[i].getAttribute('data-rate'))||0.3;
+      layers[i].style.transform='translateY('+(sy*r)+'px)';
+    }
+  }
+  window.addEventListener('scroll', upd, {passive:true});
+  upd();
+})();
+
+
+/* ─────────────────────────────────────────
+   4. SCROLL REVEAL
+───────────────────────────────────────── */
+(function() {
+  var els = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window)) {
+    for (var i=0;i<els.length;i++) els[i].classList.add('on');
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.1});
+  for (var j=0;j<els.length;j++) io.observe(els[j]);
+})();
+
+
+/* ─────────────────────────────────────────
+   5. THE GUIDE — Problem Thinking Engine
+───────────────────────────────────────── */
+(function() {
+
+  /* ── Knowledge base: constraint types ── */
+  var KB = {
+    financial: {
+      label: 'Financial Constraint',
+      kw: ['money','cost','afford','pay','fund','income','revenue','invest','capital',
+           'broke','expensive','price','cheap','free','salary','debt','loan','saving'],
+      q1: 'If the money were already secured — exactly what would you build or do first?',
+      pattern: 'Financial constraints almost always mask a sequencing problem. The question is rarely "how do I get money?" It is "what can I prove with nothing, that makes money follow?" Most people try to scale before they have proven. The order is: proof → leverage → resources. The lock is sequence, not capital.',
+      framework: '▸ STEP 1 — Define the minimum proof: the smallest output that demonstrates your idea works.\n▸ STEP 2 — Build that proof using what you already have.\n▸ STEP 3 — Document the result publicly.\n▸ STEP 4 — The documented result is your leverage. Use it to attract the next resource.\n▸ AXIOM: Value, once visible, attracts capital. Capital rarely precedes proof.'
+    },
+    knowledge: {
+      label: 'Knowledge / Skill Gap',
+      kw: ['learn','study','know','understand','degree','certificate','skill','expert',
+           'qualified','train','education','course','school','teacher','tutor','pass',
+           'exam','test','read','research'],
+      q1: 'What is the single most specific thing you need to understand — and what is the shortest path to one person or one source that already has it?',
+      pattern: 'Knowledge gaps feel permanent because institutions sell them that way. But almost every specific skill has been solved by someone who published the path. The access problem is not the knowledge itself — it is failing to decompose the field into the specific unit you actually need.',
+      framework: '▸ STEP 1 — Name the specific skill you need (not the field — the precise action).\n▸ STEP 2 — Search for that specific action, not the general domain.\n▸ STEP 3 — Find one person who demonstrably has that skill and trace what they used to learn it.\n▸ STEP 4 — Use that source. Ignore everything else until you have the thing.\n▸ AXIOM: 20 minutes from the right expert beats 3 years in the wrong institution.'
+    },
+    technical: {
+      label: 'Technical / Build Constraint',
+      kw: ['build','code','develop','create','software','app','system','program','tech',
+           'computer','tool','platform','website','data','automate','design','engineer',
+           'feature','bug','error','deploy','run','install'],
+      q1: 'What is the simplest version of this that could exist — built this week, imperfect, just enough to test one assumption?',
+      pattern: 'Technical problems are almost always specification problems. The difficulty is not in building — it is in not knowing exactly what to build. The more precisely you define the smallest working version, the faster everything becomes. Complexity enters from unclear requirements, not from technical limits.',
+      framework: '▸ STEP 1 — Write the requirement in one sentence. If you cannot, stop here. Find the sentence.\n▸ STEP 2 — Identify the single riskiest assumption in that sentence.\n▸ STEP 3 — Build only enough to test that assumption.\n▸ STEP 4 — Let the result of that test define the next step.\n▸ AXIOM: The build phase reveals specification gaps. Specification work prevents build waste.'
+    },
+    professional: {
+      label: 'Career / Work Constraint',
+      kw: ['job','career','work','business','client','employer','hire','fired','promote',
+           'salary','opportunity','market','network','industry','profession','freelance',
+           'startup','company','contract','interview','application','cv','portfolio'],
+      q1: 'What is one specific problem — real, tangible — that someone in your target field has right now, that you could solve in a way that leaves a visible trace?',
+      pattern: 'Professional access rarely comes from credentials. It comes from demonstrated relevance. People and organisations hire solutions, not qualifications. The bottleneck is almost always visibility, not competence. The credentialing system exists to filter people who cannot demonstrate value directly.',
+      framework: '▸ STEP 1 — Identify a specific, public problem in the field you are targeting.\n▸ STEP 2 — Solve a piece of it, publicly (write it, build it, share it).\n▸ STEP 3 — Document and publish the result so it is findable.\n▸ STEP 4 — Repeat until the work is found by someone with authority to act on it.\n▸ AXIOM: The market sees your output before it sees your face. Lead with output.'
+    },
+    relational: {
+      label: 'Relational / People Constraint',
+      kw: ['people','family','relationship','friend','community','team','partner',
+           'support','alone','trust','connect','social','network','isolat','conflict',
+           'communicate','understand','help','collaborate','toxic','manipulat'],
+      q1: 'What would need to change for you to feel less stuck in this — information someone does not have, a decision that has not been made, or a boundary that does not exist yet?',
+      pattern: 'Most relational constraints are communication design problems. Broken relationships are almost always built on different unstated assumptions. Most isolation comes from not knowing where the door is, not from the door being locked. People cannot respond to what they do not know you need.',
+      framework: '▸ STEP 1 — Name the specific gap: Is this an information problem (they do not know what you need)? A structure problem (the relationship lacks a mechanism for this)? A boundary problem (access needs defining)?\n▸ STEP 2 — Address the gap type directly. Do not address symptoms.\n▸ STEP 3 — Say the explicit thing. Precision reduces conflict more than tact does.\n▸ AXIOM: Most relational problems dissolve when both parties name the same constraint at the same time.'
+    },
+    time: {
+      label: 'Time / Resource Constraint',
+      kw: ['time','busy','overwhelm','too much','overload','schedule','priority','balance',
+           'stress','exhaust','manage','organise','organize','capacity','energy','rest',
+           'deadline','urgent','behind','procrastinat','focus','distract'],
+      q1: 'If you could protect exactly four focused hours this week — what is the single thing that would move the most weight if it got those hours?',
+      pattern: 'Time scarcity is almost always a prioritisation failure, not a capacity failure. Most overwhelm is caused by treating ten things as equally urgent. They are not. The system is not out of time — it is out of decision-making clarity about sequence.',
+      framework: '▸ STEP 1 — List everything demanding your time.\n▸ STEP 2 — Sort into three categories:\n   1 = only I can do this and it cannot move.\n   2 = important but has slack.\n   3 = can be eliminated, delegated, or delayed indefinitely.\n▸ STEP 3 — Eliminate all 3s. Defer all 2s. Do only 1s until the pressure changes.\n▸ AXIOM: Overwhelm is a decision problem. Solve the decision. The time appears.'
+    },
+    vision: {
+      label: 'Direction / Vision Constraint',
+      kw: ['idea','plan','dream','goal','future','direction','purpose','meaning','want',
+           'wish','hope','aspire','potential','possibility','mission','passion','calling',
+           'vision','strategy','path','next'],
+      q1: 'What is the smallest version of this vision that you could put in front of one real person this week — not to sell, just to see their honest reaction?',
+      pattern: 'Vision problems feel like clarity problems. They are almost always feedback problems. You do not need a perfect plan. You need one honest human reaction to your earliest incomplete version. Reality refines faster than thinking does. The plan that exists only in your head is infinitely refinable and infinitely wrong.',
+      framework: '▸ STEP 1 — Stop refining the plan.\n▸ STEP 2 — Build the earliest possible expression of it (a sketch, a page, a prototype, a paragraph).\n▸ STEP 3 — Put it in front of one person who will give you an honest reaction, not encouragement.\n▸ STEP 4 — Use their reaction to generate the next version of the plan.\n▸ AXIOM: Vision sharpens on contact with reality. Protect the idea too long and it calcifies.'
+    },
+    clarity: {
+      label: 'Stuck / Clarity Constraint',
+      kw: ['stuck','lost','confused','unsure','uncertain','unclear','understand','help',
+           'overwhelm','paralyse','freeze','block','don\'t know','no idea','where to start',
+           'starting','begin','first step','what do i do'],
+      q1: 'What is the one decision you are actually avoiding — not the general situation, but the specific choice that everything else is waiting for?',
+      pattern: 'Being stuck is almost always a single avoided decision in disguise. There is one specific choice — usually uncomfortable — that is blocking everything downstream. Clarity does not arrive before action. It arrives from making the one real decision and observing what becomes visible afterward.',
+      framework: '▸ STEP 1 — Name the decision explicitly. Write it as:\n   "I need to decide whether to _______ or _______"\n▸ STEP 2 — If you cannot name it precisely, that is the actual work. Find the fork.\n▸ STEP 3 — Identify what you are protecting by not deciding (comfort, status, time, relationships).\n▸ STEP 4 — Ask: is what you are protecting worth the cost of the delay?\n▸ AXIOM: The decision is the door. Everything before it is waiting. Make it.'
+    }
+  };
+
+  /* ── State machine ── */
+  var STATE = {
+    phase: 0,
+    constraint: null,
+    userInput: ''
+  };
+
+  /* ── DOM refs ── */
+  var convo   = document.getElementById('convo');
+  var typing  = document.getElementById('typing');
+  var input   = document.getElementById('guide-input');
+  var sendBtn = document.getElementById('send-btn');
+  var restBtn = document.getElementById('restart-btn');
+
+  /* ── Detect constraint from text ── */
+  function detectConstraint(text) {
+    var t = text.toLowerCase();
+    var best = null, bestScore = 0;
+    for (var key in KB) {
+      var kw = KB[key].kw;
+      var score = 0;
+      for (var i=0;i<kw.length;i++) {
+        if (t.indexOf(kw[i]) !== -1) score++;
+      }
+      if (score > bestScore) { bestScore=score; best=key; }
+    }
+    return best || 'clarity'; // default
+  }
+
+  /* ── Append message ── */
+  function addMsg(icon, isUser, html) {
+    var div = document.createElement('div');
+    div.className = 'msg' + (isUser ? ' msg-user' : '');
+    div.innerHTML =
+      '<div class="msg-icon' + (isUser?' msg-icon--user':'') + '">' + icon + '</div>' +
+      '<div class="msg-text">' + html + '</div>';
+    convo.appendChild(div);
+    div.scrollIntoView({behavior:'smooth', block:'nearest'});
+    return div;
+  }
+
+  /* ── Show typing, then execute callback ── */
+  function withTyping(delay, fn) {
+    typing.classList.add('active');
+    typing.scrollIntoView({behavior:'smooth', block:'nearest'});
+    setTimeout(function() {
+      typing.classList.remove('active');
+      fn();
+    }, delay);
+  }
+
+  /* ── Phase responses ── */
+  function openingMsg() {
+    addMsg('BP', false,
+      'Welcome.<br><br>' +
+      'This guide will not give you answers. ' +
+      'It will ask you the questions that unlock your own.<br><br>' +
+      '<strong>Describe your situation in one sentence.</strong> ' +
+      'What is the constraint you are facing right now?'
+    );
+  }
+
+  function phase1Response(text) {
+    var key = detectConstraint(text);
+    STATE.constraint = key;
+    STATE.userInput = text;
+    var c = KB[key];
+
+    addMsg('BP', false,
+      'Received.<br><br>' +
+      'This looks like a <em>' + c.label + '</em>.<br><br>' +
+      'One question before anything else:<br><br>' +
+      '<span class="highlight">' + c.q1 + '</span>'
+    );
+  }
+
+  function phase2Response(text) {
+    var c = KB[STATE.constraint];
+    addMsg('BP', false,
+      'Here is the pattern underneath what you are describing:<br><br>' +
+      c.pattern
+    );
+    setTimeout(function() {
+      withTyping(1200, function() {
+        addMsg('BP', false,
+          'And here is the framework that applies:<br><br>' +
+          '<div class="framework"><span>BUILDERS PROTOCOL — ' + c.label.toUpperCase() + '</span>\n\n' +
+          c.framework + '</div>' +
+          'The framework is not a plan. It is a diagnostic. ' +
+          'The next step is the one that reveals what you did not know before you took it.<br><br>' +
+          '<strong>Which step in this framework are you actually on — ' +
+          'and what is the real thing stopping you from moving to the next one?</strong>'
+        );
+        STATE.phase = 3;
+        restBtn.style.display = 'inline-block';
+      });
+    }, 600);
+  }
+
+  function phase3Response() {
+    addMsg('BP', false,
+      'That is the information that matters.<br><br>' +
+      'The constraint you just named is a design problem. ' +
+      'All design problems have solutions. ' +
+      'The solution reveals itself when you find the right question — ' +
+      'and you are now closer to that question than you were when you arrived here.<br><br>' +
+      '<em>Build the smallest thing that tests your next assumption. ' +
+      'Document what you learn. Use it as leverage for the step after that.</em><br><br>' +
+      'That is the entire protocol. It is also all you need.<br><br>' +
+      '<strong>Go build the door.</strong>'
+    );
+    input.disabled = true;
+    sendBtn.disabled = true;
+    input.placeholder = 'Session complete. Start a new session below.';
+  }
+
+  /* ── Handle send ── */
+  function handleSend() {
+    var text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    input.style.height = 'auto';
+    sendBtn.disabled = true;
+
+    addMsg('YOU', true, escapeHtml(text));
+
+    var delay = text.length < 80 ? 900 : 1400;
+
+    if (STATE.phase === 0) {
+      STATE.phase = 1;
+      withTyping(delay, function() {
+        phase1Response(text);
+        STATE.phase = 2;
+        sendBtn.disabled = false;
+        input.placeholder = 'Answer the question above...';
+      });
+    } else if (STATE.phase === 2) {
+      withTyping(delay, function() {
+        phase2Response(text);
+        sendBtn.disabled = false;
+        input.placeholder = 'Which step are you on? What is stopping you?';
+      });
+    } else if (STATE.phase === 3) {
+      withTyping(delay, function() {
+        phase3Response();
+      });
+    }
+  }
+
+  /* ── Escape HTML ── */
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  /* ── Restart ── */
+  function restart() {
+    STATE.phase = 0;
+    STATE.constraint = null;
+    STATE.userInput = '';
+    convo.innerHTML = '';
+    input.disabled = false;
+    input.placeholder = 'Type your situation here. One sentence is enough to begin.';
+    sendBtn.disabled = false;
+    restBtn.style.display = 'none';
+    withTyping(500, function() { openingMsg(); });
+  }
+
+  /* ── Auto-resize textarea ── */
+  input.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 140) + 'px';
+  });
+
+  /* ── Key handler ── */
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (!sendBtn.disabled) handleSend();
+    }
+  });
+
+  sendBtn.addEventListener('click', handleSend);
+  restBtn.addEventListener('click', restart);
+
+  /* ── Boot ── */
+  setTimeout(function() {
+    withTyping(600, function() { openingMsg(); });
+  }, 400);
+
+})();
+
+/* ─────────────────────────────────────────
+   6. TEXTAREA INPUT STATE MANAGEMENT
+   (sync send button disabled state)
+───────────────────────────────────────── */
+(function() {
+  var inp = document.getElementById('guide-input');
+  var btn = document.getElementById('send-btn');
+  if (!inp || !btn) return;
+  inp.addEventListener('input', function() {
+    // btn is managed by guide engine — do not override disabled state here
+    // only update visual state if not disabled by engine
+  });
+})();
+
+</script>
+
+</body>
+</html>
